@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>scroll : 페럴렉싱</title>
+<style>
+.menu{ position:fixed;  top:0; left:0;
+		  width:100%;  height:50px; 
+		  background: black; 
+		  color:white;  font-weight:bold; 
+		  line-height: 50px; 
+}
+.menu a{ text-decoration:none;  color:white; padding: 10px; }
+.menu a.on{ color:red; }
+
+.contents{ width:100%; height:3200px; }
+.contents > div{ width:100%; height: 800px; }
+/* .menu 대신 변경 */
+#blue{ background-color:blue; }
+#orange{ background-color:orange; }
+#pink{ background-color:pink; }
+#purple{ background-color:purple; }
+</style>
+<script  src="../js/jquery-3.2.1.min.js"></script>
+<script>
+$(function(){
+	var  $menu = $('.menu span a');
+	var  $contents = $('.contents  div');
+	
+	$menu.click( function(){
+		var  _index  = $(this).parent().index();
+		var  _top = $contents.eq( _index ).offset().top;
+		
+		$menu.parent().each( function(){
+		//$('.menu span').each( function(){
+			$(this).find('a').removeClass( 'on' );	
+		});
+			
+		$(this).addClass( 'on');
+		$('html, body').animate({ "scrollTop" : _top } , 500);
+	});
+	
+	$(window).scroll( function(){
+		var  _scrollTop = $(this).scrollTop();
+		
+		$contents.each(function() {
+			var  divTop = $(this).offset().top - 100; /* 메뉴 높이를 보정*/
+			
+            if( _scrollTop > divTop ){ 
+				 // 스크롤의 위치와 div.top의 위치를 비교
+				var m = $(this).index();
+				 /// contents div 의 번호를 알아오는 것 
+				
+				$menu.each( function(){
+					$(this).removeClass( 'on' );	
+				});
+				$menu.parent().eq( m ).find('a').addClass( 'on' );
+			}
+        });
+	});
+});
+</script>
+</head>
+<body>
+<div class="menu"> 
+	<span><a href="#blue"> blue</a></span>
+    <span><a href="#orange"> orange</a></span>
+    <span><a href="#pink"> pink</a></span>
+    <span><a href="#purple"> purple</a></span>
+</div>
+<div class="contents">
+    <div id="blue"></div>
+    <div id="orange"></div>
+    <div id="pink"></div>
+    <div id="purple"></div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
